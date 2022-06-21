@@ -29,20 +29,28 @@
         private void InitializeComponent()
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rOIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manualROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.displayROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 62);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 59);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(640, 480);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -52,16 +60,6 @@
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(98, 26);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Load Image";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // pictureBox2
             // 
@@ -75,7 +73,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(189, 44);
+            this.label1.Location = new System.Drawing.Point(12, 41);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 15);
             this.label1.TabIndex = 3;
@@ -84,59 +82,120 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(977, 41);
+            this.label2.Location = new System.Drawing.Point(671, 41);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(26, 15);
             this.label2.TabIndex = 4;
             this.label2.Text = "ROI";
             // 
-            // button2
+            // menuStrip1
             // 
-            this.button2.Location = new System.Drawing.Point(458, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(98, 26);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Manual ROI";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.rOIToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1323, 24);
+            this.menuStrip1.TabIndex = 8;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // button3
+            // fileToolStripMenuItem
             // 
-            this.button3.Location = new System.Drawing.Point(940, 12);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(98, 26);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Auto ROI";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.cameraToolStripMenuItem,
+            this.saveROIToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // button4
+            // openToolStripMenuItem
             // 
-            this.button4.Location = new System.Drawing.Point(554, 12);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(98, 26);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "Display ROI";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.openToolStripMenuItem.Text = "Open File";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // saveROIToolStripMenuItem
+            // 
+            this.saveROIToolStripMenuItem.Name = "saveROIToolStripMenuItem";
+            this.saveROIToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.saveROIToolStripMenuItem.Text = "Save ROI";
+            this.saveROIToolStripMenuItem.Click += new System.EventHandler(this.saveROIToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // rOIToolStripMenuItem
+            // 
+            this.rOIToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoROIToolStripMenuItem,
+            this.manualROIToolStripMenuItem,
+            this.displayROIToolStripMenuItem});
+            this.rOIToolStripMenuItem.Name = "rOIToolStripMenuItem";
+            this.rOIToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
+            this.rOIToolStripMenuItem.Text = "ROI";
+            // 
+            // autoROIToolStripMenuItem
+            // 
+            this.autoROIToolStripMenuItem.Name = "autoROIToolStripMenuItem";
+            this.autoROIToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.autoROIToolStripMenuItem.Text = "Auto ROI";
+            this.autoROIToolStripMenuItem.Click += new System.EventHandler(this.autoROIToolStripMenuItem_Click);
+            // 
+            // manualROIToolStripMenuItem
+            // 
+            this.manualROIToolStripMenuItem.Name = "manualROIToolStripMenuItem";
+            this.manualROIToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.manualROIToolStripMenuItem.Text = "Manual ROI";
+            this.manualROIToolStripMenuItem.Click += new System.EventHandler(this.manualROIToolStripMenuItem_Click);
+            // 
+            // displayROIToolStripMenuItem
+            // 
+            this.displayROIToolStripMenuItem.Name = "displayROIToolStripMenuItem";
+            this.displayROIToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.displayROIToolStripMenuItem.Text = "Display ROI";
+            this.displayROIToolStripMenuItem.Click += new System.EventHandler(this.displayROIToolStripMenuItem_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(1080, 41);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 15);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "QR Decoded:";
+            // 
+            // cameraToolStripMenuItem
+            // 
+            this.cameraToolStripMenuItem.Name = "cameraToolStripMenuItem";
+            this.cameraToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cameraToolStripMenuItem.Text = "Camera";
+            this.cameraToolStripMenuItem.Click += new System.EventHandler(this.cameraToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1323, 554);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "ROI App";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -145,12 +204,19 @@
         #endregion
 
         private PictureBox pictureBox1;
-        private Button button1;
         private PictureBox pictureBox2;
         private Label label1;
         private Label label2;
-        private Button button2;
-        private Button button3;
-        private Button button4;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private ToolStripMenuItem rOIToolStripMenuItem;
+        private ToolStripMenuItem autoROIToolStripMenuItem;
+        private ToolStripMenuItem manualROIToolStripMenuItem;
+        private ToolStripMenuItem displayROIToolStripMenuItem;
+        private Label label3;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem saveROIToolStripMenuItem;
+        private ToolStripMenuItem cameraToolStripMenuItem;
     }
 }

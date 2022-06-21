@@ -1,7 +1,6 @@
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
-using System.Numerics;
 
 namespace Robotyka_1
 {
@@ -11,7 +10,7 @@ namespace Robotyka_1
         Point StartROI, EndROI;
         bool Selecting, MouseDown;
         Image<Bgr, Byte> PrimeImage;
-        Image<Bgr, Byte> BinaryImage;
+        VideoCapture capture;
 
         public Form1()
         {
@@ -59,32 +58,24 @@ namespace Robotyka_1
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void displayROI()
         {
-            try
-            {
-                if (pictureBox1.Image == null)
-                    return;
+            if (pictureBox1.Image == null)
+                return;
 
-                if (rect == Rectangle.Empty)
-                    return;
+            if (rect == Rectangle.Empty)
+                return;
 
-                //var img = new Bitmap(pictureBox1.Image).ToImage<Bgr, byte>();
-                var img = PrimeImage.Resize(640, 480, Emgu.CV.CvEnum.Inter.Linear);
-                img.ROI = rect;
+            var img = PrimeImage.Resize(640, 480, Emgu.CV.CvEnum.Inter.Linear);
+            img.ROI = rect;
 
-                var imgROI = img.Copy();
-                img.ROI = Rectangle.Empty;
+            var imgROI = img.Copy();
+            img.ROI = Rectangle.Empty;
 
-                pictureBox2.Image = imgROI.ToBitmap();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            pictureBox2.Image = imgROI.ToBitmap();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void findROI()
         {
             if (pictureBox1.Image == null)
                 return;
@@ -92,22 +83,30 @@ namespace Robotyka_1
             var Image = PrimeImage;
             Image<Gray, Byte> TempImage;
             TempImage = Image.Convert<Gray, Byte>();
-            
+
             var corners = new Mat();
 
             QRCodeDetector qrCodeDetector = new QRCodeDetector();
             bool result = qrCodeDetector.DetectMulti(TempImage, corners);
-            
+
             if (result)
             {
-                var resultString =  new VectorOfCvString();
+                var resultString = new VectorOfCvString();
                 qrCodeDetector.DecodeMulti(TempImage, corners, resultString);
 
-                if (resultString.Length/32 != 4)
+                if (resultString.Length / 32 != 4)
                 {
                     MessageBox.Show("Not found 4 QR codes.");
                     return;
                 }
+
+                label3.Text = "QR Decode: " + resultString.ToArray()[0].ToString();
+                if (resultString.ToArray()[0].ToString() != resultString.ToArray()[1].ToString())
+                    label3.Text += ", " + resultString.ToArray()[1].ToString();
+                if (resultString.ToArray()[0].ToString() != resultString.ToArray()[2].ToString())
+                    label3.Text += ", " + resultString.ToArray()[2].ToString();
+                if (resultString.ToArray()[0].ToString() != resultString.ToArray()[3].ToString())
+                    label3.Text += ", " + resultString.ToArray()[3].ToString();
 
                 var qr1_x1 = corners.GetData().GetValue(0, 0, 0);
                 var qr1_y1 = corners.GetData().GetValue(0, 0, 1);
@@ -201,24 +200,120 @@ namespace Robotyka_1
                 pictureBox1.Image = DrawImage.ToBitmap();
                 pictureBox2.Image = imgROI.ToBitmap();
             }
-
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try {
-                string path = @"C:\Users\sqadi\Desktop\Studia\obraz.jpg";
-                PrimeImage = new Image<Bgr, Byte>(path);
-                pictureBox1.Image = PrimeImage.ToBitmap();
+            try
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                if(ofd.ShowDialog() == DialogResult.OK)
+                {
+                    PrimeImage = new Image<Bgr, Byte>(ofd.FileName);
+                    pictureBox1.Image = PrimeImage.ToBitmap();
+                }                
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void autoROIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                findROI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void displayROIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                displayROI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void saveROI()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() == DialogResult.OK) {
+                pictureBox2.Image.Save(sfd.FileName + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+        }
+
+        private void saveROIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                saveROI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void cameraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (capture == null)
+                    capture = new VideoCapture(0);
+
+                capture.ImageGrabbed += Capture_ImageGrabbed1;
+                capture.Start();
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Capture_ImageGrabbed1(object? sender, EventArgs e)
+        {
+            try
+            {
+                Mat m = new Mat();
+                capture.Retrieve(m);
+                pictureBox1.Image = m.ToImage<Bgr, Byte>().ToBitmap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void manualROI()
         {
             Selecting = true;
+        }
+
+        private void manualROIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                manualROI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
