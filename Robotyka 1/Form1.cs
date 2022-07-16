@@ -77,18 +77,25 @@ namespace Robotyka_1
 
         private void findROI()
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            
             if (pictureBox1.Image == null)
                 return;
+            
+            Image<Bgr, Byte> Image;
 
-            var Image = PrimeImage;
+            Image = PrimeImage;
+
+            //var TempImage = Image; 
             Image<Gray, Byte> TempImage;
             TempImage = Image.Convert<Gray, Byte>();
+            //CvInvoke.Imshow("grey", TempImage);
 
             var corners = new Mat();
 
             QRCodeDetector qrCodeDetector = new QRCodeDetector();
             bool result = qrCodeDetector.DetectMulti(TempImage, corners);
-
+            
             if (result)
             {
                 var resultString = new VectorOfCvString();
@@ -199,7 +206,13 @@ namespace Robotyka_1
 
                 pictureBox1.Image = DrawImage.ToBitmap();
                 pictureBox2.Image = imgROI.ToBitmap();
+
+                watch.Stop();
+                var elapsedMs = watch.ElapsedMilliseconds;
+                MessageBox.Show("Execution time: " + elapsedMs + "ms");
             }
+            else
+                MessageBox.Show("Cannot detect QR code from this image.");
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -209,6 +222,12 @@ namespace Robotyka_1
                 OpenFileDialog ofd = new OpenFileDialog();
                 if(ofd.ShowDialog() == DialogResult.OK)
                 {
+                    if(capture != null)
+                    {
+                        capture.Stop();
+                    }
+                        
+
                     PrimeImage = new Image<Bgr, Byte>(ofd.FileName);
                     pictureBox1.Image = PrimeImage.ToBitmap();
                 }                
@@ -275,9 +294,11 @@ namespace Robotyka_1
                 if (capture == null)
                     capture = new VideoCapture(0);
 
+                capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 1280);
+                capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 720);
+
                 capture.ImageGrabbed += Capture_ImageGrabbed1;
                 capture.Start();
-                
             }
             catch (Exception ex)
             {
@@ -291,7 +312,9 @@ namespace Robotyka_1
             {
                 Mat m = new Mat();
                 capture.Retrieve(m);
-                pictureBox1.Image = m.ToImage<Bgr, Byte>().ToBitmap();
+                PrimeImage = m.ToImage<Bgr, Byte>();
+                var dispImage = PrimeImage.Resize(640, 480, Emgu.CV.CvEnum.Inter.Linear);
+                pictureBox1.Image = dispImage.ToBitmap();
             }
             catch (Exception ex)
             {
